@@ -1,8 +1,35 @@
 version: '3.4'
 
+networks:
+  frontend:
+  backend:
+
 services:
   productcatalogapi:
     image: ${DOCKER_REGISTRY-}productcatalogapi
     build:
       context: .
       dockerfile: ProductCatalogAPI/Dockerfile
+    environment:
+       DatabaseServer: mssqlserver
+       DatabaseName: CatalogDb
+       DatabaseUser: sa
+       DatabaseUserPassword: ProductApi(!)
+    container_name: catalogapi
+    ports:
+       - "5010:80"
+    networks:
+       - backend
+       - frontend
+    depends_on:
+       - mssqlserver
+
+  mssqlserver:
+    image: "microsoft/mssql-server-linux:latest"
+    environment:
+        ACCEPT_EULA: Y
+        SA_PASSWORD: ProductApi(!)
+    ports:
+        - "1446:1433"
+    networks:
+        - backend

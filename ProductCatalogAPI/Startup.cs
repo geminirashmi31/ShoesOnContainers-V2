@@ -25,9 +25,15 @@ namespace ProductCatalogAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var server = Configuration["DatabaseServer"];
+            var database = Configuration["DatabaseName"];
+            var user = Configuration["DatabaseUser"];
+            var password = Configuration["DatabaseUserPassword"];
+            var connectionString = $"Server={server};Database={database};User ID={user};Password={password};MultipleActiveResultSets=true";
+
             services.AddMvc();
             services.AddDbContext<CatalogContext>(
-                Options => Options.UseSqlServer(Configuration["ConnectionString"])
+                Options => Options.UseSqlServer(connectionString)
                 );
         }
 
