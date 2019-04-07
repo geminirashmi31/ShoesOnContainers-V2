@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  productcatalogapi:
+    image: ${DOCKER_REGISTRY-}productcatalogapi
+    build:
+      context: .
+      dockerfile: ProductCatalogAPI/Dockerfile
